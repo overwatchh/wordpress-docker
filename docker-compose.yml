@@ -1,0 +1,33 @@
+version: "3.7"
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: wp_db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: abcd1234
+    volumes:
+      - wordpress:/var/lib/mysql
+  wordpress:
+    image: wordpress
+    ports:
+      - 80:80
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: admin
+      WORDPRESS_DB_PASSWORD: abcd1234
+      WORDPRESS_DB_NAME: wp_db
+    volumes:
+      - ./src:/var/www/html
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8080:80
+    environment:
+      PMA_HOST: db
+      PMA_USER: admin
+      PMA_PASSWORD: abcd1234
+      PMA_ROOT_PASSWORD: abcd1234
+volumes:
+  wordpress:
